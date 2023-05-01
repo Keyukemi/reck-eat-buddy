@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum role {
+  user
+  admin
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime  @default(now())
+  favoriteIds    String[]  @db.ObjectId
+
+  accounts Account[]
+  recipes  Recipe[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Recipe {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String    @db.ObjectId
+  name       String    @unique
+  imageUrl   String
+  bookmarked Boolean   @default(false)
+  cookTime   DateTime?
+  prepTime   DateTime?
+
+  foodClass String
+  category  String
+  allergyId String?    @db.ObjectId
+  allergy   Allergies? @relation(fields: [allergyId], references: [id])
+  cuisine   cuisine? @relation(fields: [cuisineId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cuisineId String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime @default(now())
+
+  ingredients  recipeIngredient[]
+  instructions instruction[]
+}
+
+// model Recipe{
+//   id String @id @default(auto()) @map("_id") @db.ObjectId 
+//   title String
+//   description String
+//   imageSrc String
+//   createdAt DateTime @default(now())
+//   category String
+
+// }
+
+model ingredient {
+  id               String             @id @default(auto()) @map("_id") @db.ObjectId
+  name             String             @unique
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime           @default(now())
+  recipeIngredient recipeIngredient[]
+}
+
+model measurmentUnit {
+  id               String             @id @default(auto()) @map("_id") @db.ObjectId
+  name             String             @unique
+  recipeIngredient recipeIngredient[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime           @default(now())
+}
+
+model recipeIngredient {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  recipe           Recipe         @relation(fields: [recipeId], references: [id])
+  ingredient       ingredient     @relation(fields: [ingredientId], references: [id])
+  measurmentQty    String
+  measurmentUnit   measurmentUnit @relation(fields: [measurmentUnitId], references: [id])
+  recipeId         String         @db.ObjectId
+  ingredientId     String         @db.ObjectId
+  measurmentUnitId String         @db.ObjectId
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  deletedAt        DateTime       @default(now())
+}
+
+model instruction {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  recipe      Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId    String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime @default(now())
+}
+
+model cuisine {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String     @unique
+  recipes   Recipe[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime   @default(now())
+}
+
+model Allergies {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  vegetarian  Boolean?
+  nut_allergy Boolean?
+  celiacs     Boolean?
+  lactose     Boolean?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime  @default(now())
+  recipe      Recipe[]
+}
