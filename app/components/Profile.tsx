@@ -2,11 +2,17 @@
 import Image from "next/image";
 import AvatarPlace from "../../public/REB_Images/avatar.png"
 
-const Profile = () => {
+interface ProfileImgProps{
+    src: string | null | undefined;
+};
+
+const Profile: React.FC<ProfileImgProps> = ({
+    src
+}) => {
     return ( 
         <div>
             <Image 
-                src={AvatarPlace}
+                src={src || AvatarPlace}
                 alt="Avatar"
                 width="30"
                 height="30"

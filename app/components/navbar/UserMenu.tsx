@@ -5,13 +5,13 @@ import Profile from "../Profile";
 import { useCallback, useState } from "react";
 import MenuList from "./MenuList";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
-import useLoginModal from "@/app/hooks/useLoginModal";
-import { User } from "@prisma/client";
+import useLoginModal from "@/app/hooks/useLoginModal"; 
 import { signOut } from "next-auth/react";
+import { SafeUser } from "@/app/types";
 
 
 interface UserMenuProps {
-    currentUser?: User | null; 
+    currentUser?: SafeUser | null; 
 }
 
 const UserMenu:React.FC <UserMenuProps> = ({
@@ -36,7 +36,7 @@ const UserMenu:React.FC <UserMenuProps> = ({
                 flex flex-row items-center gap-3 rounded-full cursor-pointer transition hover:shadow-md">
                     <AiOutlineMenu />
                     <div className="hidden md:block">
-                        <Profile />
+                        <Profile src={currentUser?.image} />
                     </div>
                 </div>
             </div>
