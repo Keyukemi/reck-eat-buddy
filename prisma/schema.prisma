@@ -74,15 +74,6 @@ model Recipe {
   instructions instruction[]
 }
 
-// model Recipe{
-//   id String @id @default(auto()) @map("_id") @db.ObjectId 
-//   title String
-//   description String
-//   imageSrc String
-//   createdAt DateTime @default(now())
-//   category String
-
-// }
 
 model ingredient {
   id               String             @id @default(auto()) @map("_id") @db.ObjectId

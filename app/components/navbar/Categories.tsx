@@ -2,10 +2,12 @@
 
 import  Container from "../Container";
 import {MdOutlineSoupKitchen} from "react-icons/md"
-import {BiDrink} from "react-icons/bi"
-import {FaGlobeAsia, FaGlobeAfrica} from "react-icons/fa"
-import {GiIndianPalace, GiNoodles,GiHotSpices} from "react-icons/gi"
-import {MdFastfood, MdEmojiFoodBeverage, MdBreakfastDining} from "react-icons/md"
+import {BiCookie} from "react-icons/bi"
+import {FaGlobeAfrica} from "react-icons/fa"
+import {GiIndianPalace, GiNoodles,GiHotSpices, GiMeat, GiDumplingBao, GiFishCooked, GiCroissant, GiSushis, GiFullPizza} from "react-icons/gi"
+import {MdBreakfastDining } from "react-icons/md"
+import {TbSalad} from "react-icons/tb"
+
 import CategoryBox from "../CategoryBox";
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -13,8 +15,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 export const categories =[
     
     {
-        label: "Asian",
-        icon: FaGlobeAsia,
+        label: "Japanese",
+        icon: GiSushis,
         description:"Asian Food"
     },
     {
@@ -28,12 +30,23 @@ export const categories =[
         description:"Food from all over Africa"
     },
     {
-        label: "FastFood",
-        icon: MdFastfood,
-        description:"Quick and Food"
+        label: "French",
+        icon: GiCroissant,
+        description:"French Food from all over Africa"
     },
     {
-        label: "Brunch",
+        label: "Chinese",
+        icon: GiDumplingBao,
+        description:"Meals from China"
+    },
+    
+    {
+        label: "Italian",
+        icon: GiFullPizza,
+        description:"Quick and easy Food"
+    },
+    {
+        label: "English",
         icon: MdBreakfastDining,
         description:"Food for breakfast or Brunch"
     },
@@ -53,17 +66,26 @@ export const categories =[
         description:"All the noodles in the world"
     },
     {
-        label: "Drinks",
-        icon: BiDrink,
-        description:"Drinks from the world"
+        label: "Beef",
+        icon: GiMeat,
+        description:"Beef"
     },
     {
-        label: "Beverages",
-        icon: MdEmojiFoodBeverage,
+        label: "Fish",
+        icon: GiFishCooked,
         description:"Hot and cold beverages from the world"
     },
-
-
+    {
+        label: "Pastries",
+        icon: BiCookie,
+        description:"Yummy pastries around the world"
+    },
+    {
+        label: "Salads",
+        icon: TbSalad,
+        description:"Yummy Salads around the world"
+    },
+    
 ]
 
 const Categories = () => {

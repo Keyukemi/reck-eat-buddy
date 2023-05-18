@@ -1,13 +1,16 @@
-'use client'
+'use client';
 
 import {AiOutlineMenu} from "react-icons/ai"; 
 import Profile from "../Profile";
 import { useCallback, useState } from "react";
 import MenuList from "./MenuList";
+import { signOut } from "next-auth/react";
+
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal"; 
-import { signOut } from "next-auth/react";
+import addRecipeModal from "@/app/hooks/addRecipeModal";
 import { SafeUser } from "@/app/types";
+
 
 
 interface UserMenuProps {
@@ -19,16 +22,24 @@ const UserMenu:React.FC <UserMenuProps> = ({
 }) => {
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
+    const RecipeModal = addRecipeModal();
     const [isOpen, setIsOpen] =useState(false);
 
     const toggleOpen = useCallback(()=> {
         setIsOpen((value) => !value)
     }, []);
 
+    const addRecipe = useCallback(()=>{
+        if (!currentUser){
+            return loginModal.onOpen();
+        }
+        RecipeModal.onOpen();
+    }, [currentUser, loginModal, RecipeModal])
+
     return (  
         <div className="relative">
             <div className="flex flex-row items-center gap-3">
-                <div onClick={()=>{}} className="md-block text-sm font-semibold 
+                <div onClick={addRecipe} className="md-block text-sm font-semibold 
                 rounded-full py-3 px-4 transition cursor-pointer hover:bg-neutral-100">
                     Add Your Recipe
                 </div>
