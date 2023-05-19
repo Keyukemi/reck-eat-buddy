@@ -7,6 +7,7 @@ import Heading from "../Heading";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
 import { FieldValues, useForm } from "react-hook-form";
+import ImageUpload from "../inputs/ImageUpload";
 
 enum STEPS{
     CUISINE = 0,
@@ -45,6 +46,7 @@ const RecipeModal = () => {
     });
 
     const cuisine = watch('cuisine');
+    const imageUrl = watch('imageUrl');
 
     const setCustomValue = (id:string, value:any) =>{
         setValue(id, value, {
@@ -97,12 +99,38 @@ const RecipeModal = () => {
             </div>
         </div>
     )
-    
+    if (step == STEPS.INFO){
+        bodyContent =(
+            <div className="flex flex-col gap-8">
+                <Heading
+                    title="Name of Recipe"
+                    subtitle="Tell us more about this Meal"
+                />
+                {/* Work on this later by using Input Components and creating a counter component  */}
+            </div>
+        )
+    }
+
+    if (step == STEPS.IMAGES){
+        bodyContent = (
+            <div className="flex flex-col gap-8">
+                <Heading
+                    title="Add Images of your recipe"
+                    subtitle="Upload Images here"
+                />
+                <ImageUpload 
+                    value={imageUrl} 
+                    onChange={(value)=> setCustomValue('imageUrl', value)}
+                />
+            </div>
+        )
+    }
+
     return ( 
         <Modal
             isOpen = {addRecipe.isOpen}
             onClose= {addRecipe.onClose}
-            onSubmit={addRecipe.onClose}
+            onSubmit={onNext}
             actionLabel={actionLabel}
             secondaryActionLabel={secondaryActionLabel}
             secondaryAction={step == STEPS.CUISINE ? undefined : onBack}
