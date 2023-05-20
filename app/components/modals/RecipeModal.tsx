@@ -6,8 +6,13 @@ import { useMemo, useState } from "react";
 import Heading from "../Heading";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import ImageUpload from "../inputs/ImageUpload";
+import Input from "../inputs/Input";
+import Counter from "../inputs/Counter";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 enum STEPS{
     CUISINE = 0,
@@ -18,10 +23,20 @@ enum STEPS{
     ALLERGIES = 5
 }
 
+const MeasurementUnits = {
+    TEASPOON: 'Tea spoon',
+    KG: 'kg',
+    POUNDS: 'pounds',
+    CUPS: 'cups'
+} as const
+
 const RecipeModal = () => {
+    const router = useRouter()
     const addRecipe = addRecipeModal();
 
     const [step, setStep] = useState(STEPS.CUISINE);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         register,
@@ -36,17 +51,23 @@ const RecipeModal = () => {
         defaultValues:{
             cuisine: "",
             imageUrl: '',
-            title: '',
-            instruction: '',
+            name: '',
+            foodClass:'',
+            mealCoverage:'',
+            category:'',
+            cookTime:'now',
+            prepTime:'tomorrow',
+            instructions: '',
+            measurmentQty: '',
             measurmentUnit: '',
-            measurmentQty: 0,
-            description:'',
-            ingredient: ''
+            ingredients: '',
+            allergies:'',
         }
     });
 
     const cuisine = watch('cuisine');
     const imageUrl = watch('imageUrl');
+    const mealCoverage = watch('mealCoverage');
 
     const setCustomValue = (id:string, value:any) =>{
         setValue(id, value, {
@@ -63,6 +84,28 @@ const RecipeModal = () => {
     const onNext = () => {
         setStep ((value) => value +1);
     };
+
+    const onSubmit: SubmitHandler <FieldValues>= (data) => {
+        if(step !== STEPS.ALLERGIES){
+            return onNext();
+        }
+        setIsLoading(true);
+        axios.post('/api/recipes', { ...data, allergies: [data.allergies]})
+        .then(() =>{
+            toast.success('Recipe Created!');
+            router.refresh();
+            reset();
+            setStep(STEPS.CUISINE);
+            addRecipe.onClose;
+        })
+
+        .catch (()=>{
+            toast.error('Something went wrong!');
+        })
+        .finally(()=>{
+            setIsLoading(false);
+        })
+    }
 
     const actionLabel = useMemo(() => {
         if (step == STEPS.ALLERGIES){
@@ -92,7 +135,6 @@ const RecipeModal = () => {
                             selected = {cuisine == item.label}
                             label = {item.label}
                             icon = {item.icon}
-                        
                         />
                     </div>
                 ))}
@@ -106,7 +148,15 @@ const RecipeModal = () => {
                     title="Name of Recipe"
                     subtitle="Tell us more about this Meal"
                 />
-                {/* Work on this later by using Input Components and creating a counter component  */}
+
+                <Input
+                    id="name"
+                    label="Meal Name"
+                    disabled={isLoading}
+                    register={register}
+                    errors={errors}
+                    required
+                />             
             </div>
         )
     }
@@ -126,11 +176,89 @@ const RecipeModal = () => {
         )
     }
 
+    if (step == STEPS.INGREDIENTS){
+        bodyContent = (
+            <div className="flex flex-col gap-8">
+                <Heading
+                    title="Cooking Ingredients"
+                    subtitle="Add meal ingredients here"
+                />
+                <Counter 
+                    title="Meal Quantity"
+                    subtitle="For how many people"
+                    value={mealCoverage}
+                    onChange={(value)=> setCustomValue('mealCoverage', value.toString())}
+                />
+                <hr />
+                <div className="flex flex-col">
+                    <select onSelect={(selected) => setCustomValue('measurmentUnit', selected.currentTarget.value)}>
+                        {Object.values(MeasurementUnits).map((unit) => <option key={unit}>{unit}</option>)}
+                    </select>
+
+                    <Input
+                        id="ingredients"
+                        label="Add Ingredient"
+                        disabled={isLoading}
+                        register={register}
+                        errors={errors}
+                        required
+                        measureUnit
+                    />
+                </div>
+                 {/* Add a functionality with a button that lets you create more input fields for ingredients, 
+                 need to update fieldvalues and maybe schema too*/}
+            </div>
+        )
+    }
+
+    if (step == STEPS.INSTRUCTION){
+        bodyContent = (
+            <div className="flex flex-col gap-8">
+                <Heading
+                    title="Prep and Cooking"
+                    subtitle="Step-by-step instruction on how to make the meal"
+                />
+                {/* add a counter here for cooking prep time,  need to update fieldvalues and maybe schema too*/}
+                <hr />
+                <Input
+                    id="instructions"
+                    label="Recipe Steps"
+                    disabled={isLoading}
+                    register={register}
+                    errors={errors}
+                    required
+                /> 
+                {/* This input should be a text box or a way to create a list with numbers */}
+            </div>
+        )
+    }
+
+    if (step == STEPS.ALLERGIES){
+        bodyContent = (
+            <div className="flex flex-col gap-8">
+                <Heading
+                    title="Allergies and Intolerances"
+                    subtitle="Please choose items that might trigger an allergic reaction"
+                />
+                <Input
+                    id="allergies"
+                    label="Allergies"
+                    disabled={isLoading}
+                    register={register}
+                    errors={errors}
+                    required
+                />      
+            </div>
+        )
+    }
+
+
+
     return ( 
         <Modal
             isOpen = {addRecipe.isOpen}
             onClose= {addRecipe.onClose}
-            onSubmit={onNext}
+            onSubmit={handleSubmit(onSubmit)}
             actionLabel={actionLabel}
             secondaryActionLabel={secondaryActionLabel}
             secondaryAction={step == STEPS.CUISINE ? undefined : onBack}

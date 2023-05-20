@@ -51,60 +51,38 @@ model Account {
 }
 
 model Recipe {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String    @db.ObjectId
-  name       String    @unique
-  imageUrl   String
-  bookmarked Boolean   @default(false)
-  cookTime   DateTime?
-  prepTime   DateTime?
-
-  foodClass String
-  category  String
-  allergyId String?    @db.ObjectId
-  allergy   Allergies? @relation(fields: [allergyId], references: [id])
-  cuisine   cuisine? @relation(fields: [cuisineId], references: [id])
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  cuisineId String?  @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime @default(now())
-
-  ingredients  recipeIngredient[]
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String        @db.ObjectId
+  name         String        @unique
+  imageUrl     String
+  bookmarked   Boolean       @default(false)
+  cookTime     String?
+  prepTime     String?
+  mealCoverage String
+  foodClass    String
+  category     String
+  cuisine      cuisine?      @relation(fields: [cuisineId], references: [id])
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cuisineId    String?       @db.ObjectId
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime      @default(now())
+  ingredientId String[]      @db.ObjectId
+  ingredients  ingredient[]  @relation(fields: [ingredientId], references: [id])
   instructions instruction[]
 }
 
-
 model ingredient {
-  id               String             @id @default(auto()) @map("_id") @db.ObjectId
-  name             String             @unique
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  deletedAt        DateTime           @default(now())
-  recipeIngredient recipeIngredient[]
-}
-
-model measurmentUnit {
-  id               String             @id @default(auto()) @map("_id") @db.ObjectId
-  name             String             @unique
-  recipeIngredient recipeIngredient[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  deletedAt        DateTime           @default(now())
-}
-
-model recipeIngredient {
-  id               String         @id @default(auto()) @map("_id") @db.ObjectId
-  recipe           Recipe         @relation(fields: [recipeId], references: [id])
-  ingredient       ingredient     @relation(fields: [ingredientId], references: [id])
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  name             String   @unique
   measurmentQty    String
-  measurmentUnit   measurmentUnit @relation(fields: [measurmentUnitId], references: [id])
-  recipeId         String         @db.ObjectId
-  ingredientId     String         @db.ObjectId
-  measurmentUnitId String         @db.ObjectId
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  deletedAt        DateTime       @default(now())
+  measurmentUnit   String
+  allergies        String[]
+  recipeId         String[] @db.ObjectId
+  recipe           Recipe[] @relation(fields: [recipeId], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  deletedAt        DateTime @default(now())
 }
 
 model instruction {
@@ -118,22 +96,10 @@ model instruction {
 }
 
 model cuisine {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  name      String     @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
   recipes   Recipe[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  deletedAt DateTime   @default(now())
-}
-
-model Allergies {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  vegetarian  Boolean?
-  nut_allergy Boolean?
-  celiacs     Boolean?
-  lactose     Boolean?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime  @default(now())
-  recipe      Recipe[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime @default(now())
 }
