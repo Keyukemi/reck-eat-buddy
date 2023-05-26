@@ -4,9 +4,7 @@ import prisma from '@/app/libs/prismadb';
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
-interface Body {
-    
-}
+// implement a transaction so that if one fails, all fails and doesnt get sent to the database
 
 export async function POST (
     request: Request

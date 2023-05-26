@@ -1,7 +1,7 @@
 'use client'
 
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
-import { GiWeight } from "react-icons/gi";
+import { FaWeight } from "react-icons/fa";
 interface InputProps {
     id: string;
     label: string;
@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({
     return ( 
         <div className="w-full relative"> {
             measureUnit && (
-                <GiWeight size={24} className="text-neutral-700 absolute top-5 left-2" />
+                <FaWeight size={20} className="text-neutral-700 absolute top-5 left-2" />
             )
         }
 

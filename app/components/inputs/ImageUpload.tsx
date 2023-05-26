@@ -19,6 +19,7 @@ const ImageUpload: React.FC <imageUploadProps> = ({
     const handleUpload = useCallback((result: any) => {
         onChange(result.info.secure_url)
     },[onChange])
+
     return (  
 
             <CldUploadWidget
@@ -28,6 +29,7 @@ const ImageUpload: React.FC <imageUploadProps> = ({
                     maxFiles: 1
                 }}
             >
+                
                 {({open}) => {
                     return(
                         <div onClick={() => open?.()}

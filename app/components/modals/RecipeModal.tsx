@@ -190,11 +190,7 @@ const RecipeModal = () => {
                     onChange={(value)=> setCustomValue('mealCoverage', value.toString())}
                 />
                 <hr />
-                <div className="flex flex-col">
-                    <select onSelect={(selected) => setCustomValue('measurmentUnit', selected.currentTarget.value)}>
-                        {Object.values(MeasurementUnits).map((unit) => <option key={unit}>{unit}</option>)}
-                    </select>
-
+                <div className="flex flex-row gap-8">
                     <Input
                         id="ingredients"
                         label="Add Ingredient"
@@ -202,8 +198,24 @@ const RecipeModal = () => {
                         register={register}
                         errors={errors}
                         required
-                        measureUnit
                     />
+
+                    <Input
+                        id="measurmentQty"
+                        label="How much"
+                        disabled={isLoading}
+                        register={register}
+                        errors={errors}
+                        required
+                        measureUnit
+                        type="number"
+                    />
+                    {/* <label id="measurmentUnit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Select an option</label> */}
+                    <select id="measurmentUnit" onSelect={(selected) => setCustomValue('measurmentUnit', selected.currentTarget.value)}
+                    className="border-headline border-2 text-lg rounded-lg block w-full p-2.5 ">
+                        {Object.values(MeasurementUnits).map((unit) => <option key={unit}>{unit}</option>)}
+                    </select>
                 </div>
                  {/* Add a functionality with a button that lets you create more input fields for ingredients, 
                  need to update fieldvalues and maybe schema too*/}
@@ -229,6 +241,7 @@ const RecipeModal = () => {
                     required
                 /> 
                 {/* This input should be a text box or a way to create a list with numbers */}
+                {/* Create buttons below that generate more input boxes to be added to the descriptions array */}
             </div>
         )
     }
@@ -247,7 +260,8 @@ const RecipeModal = () => {
                     register={register}
                     errors={errors}
                     required
-                />      
+                />  
+                {/* What if this is a multi-select button? Make a list of all possible allergens and have user select as necessary */}    
             </div>
         )
     }

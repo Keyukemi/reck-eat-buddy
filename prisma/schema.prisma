@@ -53,7 +53,7 @@ model Account {
 model Recipe {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   userId       String        @db.ObjectId
-  name         String        @unique
+  name         String        
   imageUrl     String
   bookmarked   Boolean       @default(false)
   cookTime     String?
@@ -74,7 +74,7 @@ model Recipe {
 
 model ingredient {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  name             String   @unique
+  name             String   
   measurmentQty    String
   measurmentUnit   String
   allergies        String[]
@@ -87,7 +87,7 @@ model ingredient {
 
 model instruction {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  description String
+  description String[]
   recipe      Recipe   @relation(fields: [recipeId], references: [id])
   recipeId    String   @db.ObjectId
   createdAt   DateTime @default(now())
@@ -97,7 +97,7 @@ model instruction {
 
 model cuisine {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String   @unique
+  name      String   
   recipes   Recipe[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
