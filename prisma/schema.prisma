@@ -51,45 +51,50 @@ model Account {
 }
 
 model Recipe {
-  id           String        @id @default(auto()) @map("_id") @db.ObjectId
-  userId       String        @db.ObjectId
-  name         String        
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
   imageUrl     String
-  bookmarked   Boolean       @default(false)
+  bookmarked   Boolean @default(false)
   cookTime     String?
   prepTime     String?
   mealCoverage String
+  costEstimate Int?
   foodClass    String
   category     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime @default(now())
+
+  userId       String  @db.ObjectId
+  ingredientId  String[] @db.ObjectId
+  instructionId String[] @db.ObjectId
+  cuisineId     String?  @db.ObjectId
+
+  instructions instruction[] @relation(fields: [instructionId], references: [id])
   cuisine      cuisine?      @relation(fields: [cuisineId], references: [id])
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  cuisineId    String?       @db.ObjectId
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  deletedAt    DateTime      @default(now())
-  ingredientId String[]      @db.ObjectId
   ingredients  ingredient[]  @relation(fields: [ingredientId], references: [id])
-  instructions instruction[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ingredient {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  name             String   
-  measurmentQty    String
-  measurmentUnit   String
-  allergies        String[]
-  recipeId         String[] @db.ObjectId
-  recipe           Recipe[] @relation(fields: [recipeId], references: [id])
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  deletedAt        DateTime @default(now())
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  measurmentQty  String
+  measurmentUnit String
+  allergies      String[]
+  recipeId       String[] @db.ObjectId
+  recipe         Recipe[] @relation(fields: [recipeId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime @default(now())
 }
 
 model instruction {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   description String[]
-  recipe      Recipe   @relation(fields: [recipeId], references: [id])
-  recipeId    String   @db.ObjectId
+  recipeId    String[] @db.ObjectId
+  recipe      Recipe[] @relation(fields: [recipeId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   deletedAt   DateTime @default(now())
@@ -97,7 +102,7 @@ model instruction {
 
 model cuisine {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String   
+  name      String
   recipes   Recipe[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

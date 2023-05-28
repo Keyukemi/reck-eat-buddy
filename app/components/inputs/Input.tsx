@@ -25,6 +25,8 @@ const Input: React.FC<InputProps> = ({
 
         <input 
             id={id}
+            // value={value}
+            // onChange={(e)=>{onChange(index, e.target.value)}}
             disabled ={disabled}
             {...register (id, {required})}
                 placeholder=" " 

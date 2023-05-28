@@ -38,6 +38,20 @@ const RecipeModal = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [inputs, manageInputs] = useState(['']);
+
+    const manageAddedInputs = () => {
+        manageInputs([...inputs,''])
+    }
+
+    const manageInputChange = (index:any, value:any) => {
+        const updatedInputs = [...inputs]
+        updatedInputs[index] = value
+        manageInputs(updatedInputs)
+    }
+     
+  
+
     const {
         register,
         handleSubmit,
@@ -198,6 +212,7 @@ const RecipeModal = () => {
                         register={register}
                         errors={errors}
                         required
+                        
                     />
 
                     <Input
@@ -217,6 +232,16 @@ const RecipeModal = () => {
                         {Object.values(MeasurementUnits).map((unit) => <option key={unit}>{unit}</option>)}
                     </select>
                 </div>
+
+                {/* 1. Create a state that handles each input created
+                 have/render a button  with a value saying add more*/}
+                {/* 2. we need a function that handles the add more functionality  */}
+                {/* A function to handle change of values in the input */}
+                {/* 3. Rendering the first input boxes by default */}
+                
+                
+
+
                  {/* Add a functionality with a button that lets you create more input fields for ingredients, 
                  need to update fieldvalues and maybe schema too*/}
             </div>

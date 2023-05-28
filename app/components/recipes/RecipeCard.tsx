@@ -13,7 +13,7 @@ interface recipeCardProps{
     actionLabel?: string;
     actionId?: string;
     currentUser: SafeUser | null;
-    info: ingredient
+    info?: ingredient
 
 }
 
@@ -44,7 +44,7 @@ const RecipeCard: React.FC <recipeCardProps> = ({
                     />
                     <div className="absolute top-3 right-3">
                         <HeartButton
-                            recipeID = {data.id}
+                            recipeId = {data.id}
                             currentUser = {currentUser}
                         />
                     </div>
