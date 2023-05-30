@@ -1,5 +1,5 @@
 'use client'
-import { SafeUser } from "@/app/types";
+import { SafeUser, safeRecipe } from "@/app/types";
 import { Recipe, ingredient } from "@prisma/client"
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
@@ -7,7 +7,7 @@ import Image from "next/image";
 import HeartButton from "../HeartButton";
 
 interface recipeCardProps{
-    data: Recipe;
+    data: safeRecipe;
     onAction?: (id: string) => void;
     disabled?: boolean;
     actionLabel?: string;
@@ -37,6 +37,8 @@ const RecipeCard: React.FC <recipeCardProps> = ({
             <div className="flex flex-col gap-2 w-full">
                 <div className="aspect-square rounded-xl w-full relative overflow-hidden">  
                     <Image
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority
                         fill 
                         alt="Recipe"
                         src={data.imageUrl}
@@ -50,7 +52,7 @@ const RecipeCard: React.FC <recipeCardProps> = ({
                     </div>
                 </div>
                 <div className="font-light text-neutral-500">
-                    {data.name}
+                    {data.category}
                     {/* This should be changed to display the cuisine or food category */}
                 </div>
                 {/* <div className="font-light text-neutral-500">
@@ -58,7 +60,7 @@ const RecipeCard: React.FC <recipeCardProps> = ({
                 </div> */}
                 <div className="flex flex-row items-center gap-1">
                     <div className="font font-semibold">
-                        meal cost estimate
+                        {data.name}
                     </div>
                     <div>
 

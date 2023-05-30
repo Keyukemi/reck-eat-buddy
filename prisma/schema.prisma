@@ -58,7 +58,7 @@ model Recipe {
   cookTime     String?
   prepTime     String?
   mealCoverage String
-  costEstimate Int?
+  costEstimate String?
   foodClass    String
   category     String
 
@@ -69,10 +69,8 @@ model Recipe {
   userId       String  @db.ObjectId
   ingredientId  String[] @db.ObjectId
   instructionId String[] @db.ObjectId
-  cuisineId     String?  @db.ObjectId
 
   instructions instruction[] @relation(fields: [instructionId], references: [id])
-  cuisine      cuisine?      @relation(fields: [cuisineId], references: [id])
   ingredients  ingredient[]  @relation(fields: [ingredientId], references: [id])
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -100,11 +98,3 @@ model instruction {
   deletedAt   DateTime @default(now())
 }
 
-model cuisine {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  recipes   Recipe[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime @default(now())
-}

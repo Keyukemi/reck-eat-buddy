@@ -68,6 +68,7 @@ const RecipeModal = () => {
             name: '',
             foodClass:'',
             mealCoverage:'',
+            costEstimate:'',
             category:'',
             cookTime:'now',
             prepTime:'tomorrow',
@@ -79,7 +80,7 @@ const RecipeModal = () => {
         }
     });
 
-    const cuisine = watch('cuisine');
+    const category = watch('category');
     const imageUrl = watch('imageUrl');
     const mealCoverage = watch('mealCoverage');
 
@@ -145,8 +146,8 @@ const RecipeModal = () => {
                 {categories.map((item) => (
                     <div key={item.label} className="col-span-1">
                         <CategoryInput 
-                            onClick = {(cuisine) => setCustomValue('cuisine', cuisine)}
-                            selected = {cuisine == item.label}
+                            onClick = {(category) => setCustomValue('category', category)}
+                            selected = {category == item.label}
                             label = {item.label}
                             icon = {item.icon}
                         />
@@ -203,6 +204,16 @@ const RecipeModal = () => {
                     value={mealCoverage}
                     onChange={(value)=> setCustomValue('mealCoverage', value.toString())}
                 />
+                <Input
+                        id="costEstimate"
+                        label="Estimated Cost"
+                        disabled={isLoading}
+                        register={register}
+                        errors={errors}
+                        type="number"
+                        required 
+                        costEstimate  
+                    />
                 <hr />
                 <div className="flex flex-row gap-8">
                     <Input
@@ -212,7 +223,6 @@ const RecipeModal = () => {
                         register={register}
                         errors={errors}
                         required
-                        
                     />
 
                     <Input
@@ -222,8 +232,8 @@ const RecipeModal = () => {
                         register={register}
                         errors={errors}
                         required
-                        measureUnit
                         type="number"
+                        
                     />
                     {/* <label id="measurmentUnit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Select an option</label> */}

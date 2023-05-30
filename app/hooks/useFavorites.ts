@@ -31,7 +31,6 @@ const useFavorites = ({
         }
         try {
             let request;
-            console.log({recipeId})
             
             if (hasFavorited){
                 request = () => axios.delete(`/api/favorites/${recipeId}`);

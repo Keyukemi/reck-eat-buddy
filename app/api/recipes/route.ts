@@ -15,7 +15,6 @@ export async function POST (
     }
     const body = await request.json();
     const{
-        cuisine,
         imageUrl,
         name,
         foodClass,
@@ -23,6 +22,7 @@ export async function POST (
         cookTime,
         prepTime,
         mealCoverage,
+        costEstimate,
         instructions,
         measurmentUnit,
         measurmentQty,
@@ -48,16 +48,12 @@ export async function POST (
             category,
             cookTime,
             prepTime,
+            costEstimate,
             mealCoverage,
             user: {
                 connect: {
                     id: currentUser.id,
                 }
-            },
-            cuisine: {
-                create: {
-                    name: cuisine
-                },  
             },
             instructions: {
                 create: {
