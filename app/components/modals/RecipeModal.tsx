@@ -13,6 +13,8 @@ import Counter from "../inputs/Counter";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { AiOutlineFieldTime } from "react-icons/ai";
+import { BiTimer } from "react-icons/bi";
 
 enum STEPS{
     CUISINE = 0,
@@ -70,8 +72,8 @@ const RecipeModal = () => {
             mealCoverage:'',
             costEstimate:'',
             category:'',
-            cookTime:'now',
-            prepTime:'tomorrow',
+            cookTime:'',
+            prepTime:'',
             instructions: '',
             measurmentQty: '',
             measurmentUnit: '',
@@ -171,7 +173,34 @@ const RecipeModal = () => {
                     register={register}
                     errors={errors}
                     required
-                />             
+                /> 
+                <hr />
+                <div className="flex flex-row items-center justify-evenly gap-2">
+                    <div className="flex flex-row gap-2">
+                    <AiOutlineFieldTime size={24} />
+                        <Input
+                            id="prepTime"
+                            label="Prep Time"
+                            disabled={isLoading}
+                            register={register}
+                            errors={errors}
+                            required
+                        /> 
+                    </div>
+                    <div className="flex flex-row gap-2">
+                        <BiTimer size={24}/>
+                        <Input
+                            id="cookTime"
+                            label="Cook Time"
+                            disabled={isLoading}
+                            register={register}
+                            errors={errors}
+                            required
+                        /> 
+                    </div>
+                </div>
+               
+                           
             </div>
         )
     }
