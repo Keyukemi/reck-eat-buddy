@@ -1,8 +1,37 @@
 import prisma from "@/app/libs/prismadb"
 
-export default async function getRecipes(){
+export interface IRecipesParams{
+    userId?: string;
+    category?: string;
+    mealCoverage?: number;
+
+}
+
+export default async function getRecipes(
+    params: IRecipesParams
+){
     try{
+        const {userId, category, mealCoverage} = params;
+        let query: any = {}
+
+        // if (userId){
+        //     query.userId = userId
+        // }
+
+         if (category){
+            query.category = category
+        }
+
+        if (mealCoverage){
+            query.mealCoverage = {
+                gte: +mealCoverage
+            }
+        }
+
+
+
         const recipes = await prisma.recipe.findMany({
+            where:query, 
             orderBy: {
                 createdAt: 'desc'
             }

@@ -7,6 +7,7 @@ import ToasterProvider from './providers/ToasterProvider';
 import LoginModal from './components/modals/LoginModal';
 import getCurrentUser from './actions/getCurrentUser';
 import RecipeModal from './components/modals/RecipeModal';
+import SearchModal from './components/modals/SearchModal';
 
 const font  = Montserrat({ 
   subsets: ['latin'] });
@@ -27,6 +28,7 @@ export default async function RootLayout({
       <body className={font.className}>
         <ClientOnly>
           <ToasterProvider />
+          <SearchModal />
           <RecipeModal />
           <LoginModal />
           <RegisterModal />

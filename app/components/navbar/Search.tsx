@@ -1,9 +1,12 @@
 'use client';
+import useSearchModal from "@/app/hooks/useSearchModal";
 import {BiSearch} from "react-icons/bi";
 
 const Search = () => {
+    const searchModal = useSearchModal();
     return ( 
-        <div className="
+        <div onClick={searchModal.onOpen}
+        className="
             border-[1px]
             w-full
             md:w-auto
@@ -16,10 +19,10 @@ const Search = () => {
         "> 
             <div className="flex flex-row items-center justify-between">
                 <div className=" text-sm font-semibold px-6">
-                    Meal Type
+                    Meal Name
                 </div>
                 <div className="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">
-                    Food Class
+                    Meal Category
                 </div>
                 <div className="text-sm pl-6 pr-2 flex flex-row items-center gap-3 text-gray-600">
                     <div className="hidden sm:block">Allergies</div>

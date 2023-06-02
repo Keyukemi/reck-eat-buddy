@@ -10,6 +10,7 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal"; 
 import addRecipeModal from "@/app/hooks/addRecipeModal";
 import { SafeUser } from "@/app/types";
+import { useRouter } from "next/navigation";
 
 
 
@@ -20,6 +21,7 @@ interface UserMenuProps {
 const UserMenu:React.FC <UserMenuProps> = ({
     currentUser
 }) => {
+    const router = useRouter();
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
     const RecipeModal = addRecipeModal();
@@ -59,9 +61,9 @@ const UserMenu:React.FC <UserMenuProps> = ({
                         {currentUser ? (
                             <>
                             
-                            <MenuList onClick={()=>{}}label="My meals" />
-                            <MenuList onClick={()=>{}} label="Favorite meals" />
-                            <MenuList onClick={()=>{}}label="My Food Timetable" />
+                            <MenuList onClick={()=> router.push('mymeals')}label="My meals" />
+                            <MenuList onClick={()=> router.push('favorites')} label="Favorite meals" />
+                            <MenuList onClick={()=> router.push('timetable')}label="My Food Timetable" />
 
                             <hr />
                             <MenuList onClick={()=>signOut()}label="Logout" />

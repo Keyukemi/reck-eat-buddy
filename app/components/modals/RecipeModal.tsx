@@ -39,6 +39,7 @@ const RecipeModal = () => {
     const [step, setStep] = useState(STEPS.CUISINE);
 
     const [isLoading, setIsLoading] = useState(false);
+    
 
     const [inputs, manageInputs] = useState(['']);
 
@@ -85,6 +86,7 @@ const RecipeModal = () => {
     const category = watch('category');
     const imageUrl = watch('imageUrl');
     const mealCoverage = watch('mealCoverage');
+    //const [mealCoverage, setMealCoverage] = useState(1);
 
     const setCustomValue = (id:string, value:any) =>{
         setValue(id, value, {
