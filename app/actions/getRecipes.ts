@@ -11,27 +11,26 @@ export default async function getRecipes(
     params: IRecipesParams
 ){
     try{
-        const {userId, category, mealCoverage} = params;
-        let query: any = {}
+        // const {userId, category, mealCoverage} = params;
+        // let query: any = {}
 
         // if (userId){
         //     query.userId = userId
         // }
 
-         if (category){
-            query.category = category
-        }
+        //  if (category){
+        //     query.category = category
+        // }
 
-        if (mealCoverage){
-            query.mealCoverage = {
-                gte: +mealCoverage
-            }
-        }
-
+        // if (mealCoverage){
+        //     query.mealCoverage = {
+        //         gte: +mealCoverage
+        //     }
+        // }
 
 
         const recipes = await prisma.recipe.findMany({
-            where:query, 
+            //where:query, 
             orderBy: {
                 createdAt: 'desc'
             }

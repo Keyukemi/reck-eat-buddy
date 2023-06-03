@@ -7,28 +7,14 @@ import getFavRecipes from "../actions/getFavRecipes";
 import FavoriteClients from "./FavoriteClients";
 
 const FavRecipePage = async() =>{
-    const recipes = await getFavRecipes();
-    // const currentUser = await getCurrentUser();
 
-    if(recipes.length == 0){
-    return (
-        <ClientOnly>
-            <EmptyState 
-                title="No Favorite Recipes Found"
-                subtitle="looks like you haven't picked favorites yet"
-            />
-        </ClientOnly>
-    )
-}   
-// return(
-//     <ClientOnly> 
-//         <FavoriteClients 
-//             recipes = {recipes}
-//             currentUser={currentUser}
-//         />
-//     </ClientOnly>
-// )
-
+        return(
+                       
+            <div>
+                Testing 1 2 3
+            </div>
+                         
+            )
 }
 
 export default FavRecipePage;

@@ -13,8 +13,9 @@ import Counter from "../inputs/Counter";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { AiOutlineFieldTime } from "react-icons/ai";
+import { AiOutlineFieldTime, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { BiTimer } from "react-icons/bi";
+import Button from "../Button";
 
 enum STEPS{
     CUISINE = 0,
@@ -47,12 +48,23 @@ const RecipeModal = () => {
         manageInputs([...inputs,''])
     }
 
+    const onDeleteInput = (index: any) => {
+    
+        if (inputs.length === 1){
+        return 
+        }
+        const values = [...inputs]
+        values.splice(index, 1)
+        manageInputs(values)
+    }
+
+
     const manageInputChange = (index:any, value:any) => {
         const updatedInputs = [...inputs]
         updatedInputs[index] = value
         manageInputs(updatedInputs)
     }
-     
+
   
 
     const {
@@ -177,30 +189,7 @@ const RecipeModal = () => {
                     required
                 /> 
                 <hr />
-                <div className="flex flex-row items-center justify-evenly gap-2">
-                    <div className="flex flex-row gap-2">
-                    <AiOutlineFieldTime size={24} />
-                        <Input
-                            id="prepTime"
-                            label="Prep Time"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
-                        /> 
-                    </div>
-                    <div className="flex flex-row gap-2">
-                        <BiTimer size={24}/>
-                        <Input
-                            id="cookTime"
-                            label="Cook Time"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
-                        /> 
-                    </div>
-                </div>
+                
                
                            
             </div>
@@ -235,6 +224,7 @@ const RecipeModal = () => {
                     value={mealCoverage}
                     onChange={(value)=> setCustomValue('mealCoverage', value.toString())}
                 />
+    
                 <Input
                         id="costEstimate"
                         label="Estimated Cost"
@@ -244,19 +234,30 @@ const RecipeModal = () => {
                         type="number"
                         required 
                         costEstimate  
-                    />
+                />
                 <hr />
-                <div className="flex flex-row gap-8">
-                    <Input
-                        id="ingredients"
-                        label="Add Ingredient"
-                        disabled={isLoading}
-                        register={register}
-                        errors={errors}
-                        required
-                    />
 
-                    <Input
+                <div className="flex flex-col gap-8 ">
+                    <Button 
+                        onClick={manageAddedInputs}
+                        label="Add more Ingredients"
+                        icon={AiOutlinePlus}
+                    />      
+                </div>
+
+                {inputs.map((value, index) => (
+                    <div key={value} className="flex flex-row gap-8">
+                        <Input 
+                            id="ingredients"
+                            label="Add Ingredient"
+                            disabled={isLoading}
+                            register={register}
+                            errors={errors}
+                            required
+                            value={value}
+                            onChange= {(event: any) => manageInputChange(index, event)}
+                        />
+                        <Input
                         id="measurmentQty"
                         label="How much"
                         disabled={isLoading}
@@ -264,15 +265,23 @@ const RecipeModal = () => {
                         errors={errors}
                         required
                         type="number"
-                        
-                    />
-                    {/* <label id="measurmentUnit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Select an option</label> */}
-                    <select id="measurmentUnit" onSelect={(selected) => setCustomValue('measurmentUnit', selected.currentTarget.value)}
-                    className="border-headline border-2 text-lg rounded-lg block w-full p-2.5 ">
-                        {Object.values(MeasurementUnits).map((unit) => <option key={unit}>{unit}</option>)}
-                    </select>
-                </div>
+                            
+                        />
+                        {/* <label id="measurmentUnit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Select an option</label> */}
+                        <select id="measurmentUnit" onSelect={(selected) => setCustomValue('measurmentUnit', selected.currentTarget.value)}
+                        className="border-headline border-2 text-lg rounded-lg block w-full p-3 ">
+                            {Object.values(MeasurementUnits).map((unit) => <option key={unit}>{unit}</option>)}
+                        </select>
+
+                        <button onClick={()=> (onDeleteInput(index))}
+                             className="w-40 h-10 transition cursor-pointer flex justify-center items-center rounded-full
+                             text-primary border-paragraph hover:opacity-80 border-[3px] bg-headline ">
+                                <AiOutlineMinus size={20}/>
+                        </button> 
+                    </div> 
+                ))}
+
 
                 {/* 1. Create a state that handles each input created
                  have/render a button  with a value saying add more*/}
@@ -280,9 +289,7 @@ const RecipeModal = () => {
                 {/* A function to handle change of values in the input */}
                 {/* 3. Rendering the first input boxes by default */}
                 
-                
-
-
+    
                  {/* Add a functionality with a button that lets you create more input fields for ingredients, 
                  need to update fieldvalues and maybe schema too*/}
             </div>
@@ -296,18 +303,58 @@ const RecipeModal = () => {
                     title="Prep and Cooking"
                     subtitle="Step-by-step instruction on how to make the meal"
                 />
-                {/* add a counter here for cooking prep time,  need to update fieldvalues and maybe schema too*/}
+                <div className="flex flex-row items-center justify-evenly gap-2">
+                        <Input
+                            id="prepTime"
+                            label="Prep Time"
+                            disabled={isLoading}
+                            register={register}
+                            errors={errors}
+                            required
+                            prepTime
+                        /> 
+
+                        <Input
+                            id="cookTime"
+                            label="Cook Time"
+                            disabled={isLoading}
+                            register={register}
+                            errors={errors}
+                            required
+                            cookTime
+                        /> 
+                </div>
                 <hr />
-                <Input
-                    id="instructions"
-                    label="Recipe Steps"
-                    disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
-                /> 
-                {/* This input should be a text box or a way to create a list with numbers */}
-                {/* Create buttons below that generate more input boxes to be added to the descriptions array */}
+
+               
+                {inputs.map((value, index) => (
+                    <div key={value} className="flex flex-row gap-8">
+                        <Input 
+                            id="instructions"
+                            label="Cooking Steps"
+                            disabled={isLoading}
+                            register={register}
+                            errors={errors}
+                            required
+                            value={value}
+                            onChange= {(event: any) => manageInputChange(index, event)}
+                        />
+
+                        <button onClick={()=> (onDeleteInput(index))}
+                             className="w-10 h-10 transition cursor-pointer flex justify-center items-center rounded-full
+                             text-primary border-paragraph hover:opacity-80 border-[3px] bg-headline ">
+                                <AiOutlineMinus size={20}/>
+                        </button> 
+                    </div> 
+                ))}
+
+                <div className="flex flex-col gap-8 ">
+                    <Button 
+                        onClick={manageAddedInputs}
+                        label="Add more Cooking Steps"
+                        icon={AiOutlinePlus}
+                    />      
+                </div>
             </div>
         )
     }
@@ -317,17 +364,38 @@ const RecipeModal = () => {
             <div className="flex flex-col gap-8">
                 <Heading
                     title="Allergies and Intolerances"
-                    subtitle="Please choose items that might trigger an allergic reaction"
+                    subtitle="Please input items that might trigger an allergic reaction"
                 />
-                <Input
-                    id="allergies"
-                    label="Allergies"
-                    disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
-                />  
-                {/* What if this is a multi-select button? Make a list of all possible allergens and have user select as necessary */}    
+
+                               
+                {inputs.map((value, index) => (
+                    <div key={value} className="flex flex-row gap-8">
+                        <Input 
+                            id="allergies"
+                            label="Allergens in Recipe"
+                            disabled={isLoading}
+                            register={register}
+                            errors={errors}
+                            required
+                            value={value}
+                            onChange= {(event: any) => manageInputChange(index, event)}
+                        />
+
+                        <button onClick={()=> (onDeleteInput(index))}
+                             className="w-10 h-10 transition cursor-pointer flex justify-center items-center rounded-full
+                             text-primary border-paragraph hover:opacity-80 border-[3px] bg-headline ">
+                                <AiOutlineMinus size={20}/>
+                        </button> 
+                    </div> 
+                ))}
+
+                <div className="flex flex-col gap-8 ">
+                    <Button 
+                        onClick={manageAddedInputs}
+                        label="Add more Cooking Steps"
+                        icon={AiOutlinePlus}
+                    />      
+                </div>  
             </div>
         )
     }

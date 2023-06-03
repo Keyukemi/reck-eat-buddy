@@ -27,7 +27,7 @@
     "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.43.9",
+    "react-hook-form": "^7.44.3",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.8.0",
     "tailwindcss": "3.3.1",
@@ -36,6 +36,8 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
-    "prisma": "^4.13.0"
+    "prisma": "^4.13.0",
+    "webpack": "^5.85.0",
+    "webpack-cli": "^5.1.1"
   }
 }
