@@ -10,8 +10,6 @@ interface RecipeInfoProps{
     preptime: string | null;
     cookTime: string | null;
     mealCoverage: string;
-    ingredients?: string;
-    instructions?: string;
     category: {
         icon: IconType;
         label: string;
@@ -20,7 +18,7 @@ interface RecipeInfoProps{
 }
 
 const RecipeInfo: React.FC <RecipeInfoProps> = ({
-    user, category, preptime, cookTime, mealCoverage, ingredients, instructions
+    user, category, preptime, cookTime, mealCoverage
 }) => {
     return (
         <div className="flex flex-col col-span-4 gap-8">
@@ -44,14 +42,6 @@ const RecipeInfo: React.FC <RecipeInfoProps> = ({
                 />
             }
             <hr />
-            <div>
-                {/* This section will be used to map over ingredients */}
-            </div>
-            <div>
-                {/* This section will be used to map over cooking instructions */}
-            </div>
-
-
         </div>
       );
 }

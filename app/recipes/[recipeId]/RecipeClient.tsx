@@ -2,14 +2,18 @@
 
 import Container from "@/app/components/Container";
 import { categories } from "@/app/components/navbar/Categories";
+import IngredientBox from "@/app/components/recipes/IngredientBox";
+import InstructionBox from "@/app/components/recipes/InstructionBox";
 import RecipeHead from "@/app/components/recipes/RecipeHead";
 import RecipeInfo from "@/app/components/recipes/RecipeInfo";
-import { SafeUser, safeRecipe } from "@/app/types";
+import { SafeIngredients, SafeInstructions, SafeUser, safeRecipe } from "@/app/types";
 import { useMemo } from "react";
 
 interface RecipeClientProps{
     recipe: safeRecipe & {
-        user: SafeUser
+        user: SafeUser,
+        ingredients: SafeIngredients,
+        instructions: SafeInstructions
     }
     currentUser?: SafeUser | null;
 }
@@ -41,10 +45,20 @@ const RecipeClient: React.FC <RecipeClientProps> = ({
                                 preptime = {recipe.prepTime}
                                 cookTime = {recipe.cookTime}
                                 mealCoverage = {recipe.mealCoverage}
-                                ingredients = ""
-                                instructions =""
                             />
+
+                            <div className="border border-black border-3 w-full order-first mb-10 md:order-last md:col-span-3">
+                                <IngredientBox 
+                                    ingredients = {recipe.ingredients}
+                                />
+                            </div>
                         </div>
+                    </div>
+                    <div className="border border-black border-3 w-full">
+                        <InstructionBox 
+                            instructions= ""
+                        
+                        />
                     </div>
 
                 </div>
