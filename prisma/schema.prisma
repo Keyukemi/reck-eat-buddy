@@ -66,13 +66,15 @@ model Recipe {
   updatedAt DateTime @updatedAt
   deletedAt DateTime @default(now())
 
-  userId       String  @db.ObjectId
+  userId        String   @db.ObjectId
   ingredientId  String[] @db.ObjectId
   instructionId String[] @db.ObjectId
+  allergyId     String[] @db.ObjectId
 
   instructions instruction[] @relation(fields: [instructionId], references: [id])
   ingredients  ingredient[]  @relation(fields: [ingredientId], references: [id])
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  allergy      allergy[]     @relation(fields: [allergyId], references: [id])
 }
 
 model ingredient {
@@ -80,7 +82,6 @@ model ingredient {
   name           String
   measurmentQty  String
   measurmentUnit String
-  allergies      String[]
   recipeId       String[] @db.ObjectId
   recipe         Recipe[] @relation(fields: [recipeId], references: [id])
   createdAt      DateTime @default(now())
@@ -90,7 +91,7 @@ model ingredient {
 
 model instruction {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  description String[]
+  description String
   recipeId    String[] @db.ObjectId
   recipe      Recipe[] @relation(fields: [recipeId], references: [id])
   createdAt   DateTime @default(now())
@@ -98,3 +99,12 @@ model instruction {
   deletedAt   DateTime @default(now())
 }
 
+model allergy {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  recipeId  String[] @db.ObjectId
+  recipe    Recipe[] @relation(fields: [recipeId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime @default(now())
+}

@@ -32,7 +32,7 @@ export async function POST (
 
     const createdIngredients = await prisma.ingredient.create({
         data: {
-            allergies,
+            // allergies,
             measurmentQty,
             measurmentUnit,
             name: ingredients,

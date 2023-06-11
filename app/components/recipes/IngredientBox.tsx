@@ -1,8 +1,10 @@
 'use client'
 import { SafeIngredients, SafeUser, safeRecipe } from "@/app/types"
+import { ingredient } from "@prisma/client";
 
 
 interface IngredientBoxProps{
+    // ingredients: string
     ingredients: SafeIngredients | null
 }
 

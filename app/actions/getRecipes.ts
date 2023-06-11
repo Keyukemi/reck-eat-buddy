@@ -8,7 +8,7 @@ export interface IRecipesParams{
 }
 
 export default async function getRecipes(
-    params: IRecipesParams
+    //params: IRecipesParams
 ){
     try{
         // const {userId, category, mealCoverage} = params;
