@@ -1,4 +1,4 @@
-import { Recipe, User, ingredient, instruction } from "@prisma/client";
+import { Recipe, User, ingredient, instruction, allergy } from "@prisma/client";
 
 export type safeRecipe = Omit<
 Recipe,
@@ -37,5 +37,14 @@ export type SafeInstructions = Omit<
     createdAt: string;
     updatedAt: string;
     deletedAt: string;
+
+}
+export type safeAllergy = Omit<
+allergy,
+"createdAt" | "updatedAt" | "deletedAt"
+> & {
+createdAt: string;
+updatedAt: string;
+deletedAt: string;
 
 }

@@ -22,8 +22,7 @@ const RecipeClient: React.FC <RecipeClientProps> = ({
     recipe,currentUser
 }) => {
     const category = useMemo(()=>{
-    return categories.find((item) => item.label == recipe.category)
-
+        return categories.find((item) => item.label == recipe.category)
     },[recipe.category]);
 
     return (
