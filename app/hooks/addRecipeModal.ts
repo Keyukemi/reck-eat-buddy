@@ -1,4 +1,4 @@
-import {create} from "Zustand";
+import {create} from "zustand";
 
 interface addRecipeStore {
     isOpen: boolean;
