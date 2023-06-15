@@ -12,8 +12,8 @@ import { useMemo } from "react";
 interface RecipeClientProps{
     recipe: safeRecipe & {
         user: SafeUser,
-        ingredients: SafeIngredients,
-        instructions: SafeInstructions
+        // ingredients: SafeIngredients,
+        // instructions: SafeInstructions
     }
     currentUser?: SafeUser | null;
 }
@@ -48,9 +48,9 @@ const RecipeClient: React.FC <RecipeClientProps> = ({
                             />
 
                             <div className="border border-black border-3 w-full order-first mb-10 md:order-last md:col-span-3">
-                                <IngredientBox 
+                                {/* <IngredientBox 
                                     ingredients = {recipe.ingredients}
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>
