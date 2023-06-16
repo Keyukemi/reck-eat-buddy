@@ -11,13 +11,15 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import {DevTool} from "@hookform/devtools"
 
 import ImageUpload from "../inputs/ImageUpload";
-import Input from "../inputs/Input";
+import Input, {BaseInput} from "../inputs/Input";
 import Counter from "../inputs/Counter";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import {AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import {AiOutlineFieldTime, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Button from "../Button";
+import { BiTimer } from "react-icons/bi";
+import { MdOutlinePriceChange } from "react-icons/md";
 
 
 enum STEPS{
@@ -43,6 +45,7 @@ const RecipeModal = () => {
     const [step, setStep] = useState(STEPS.CUISINE);
 
     const [isLoading, setIsLoading] = useState(false);
+
     
     //a. Ingredients Input State
     const [ingredientInputs, manageIngredientsInputs] = useState([{
@@ -52,7 +55,7 @@ const RecipeModal = () => {
         ingredients: '',
     }]);
     
-
+    
     const manageAddedIngredientInputs = () => {
         const newField = {id:ingredientInputs.length +1,  
             measurmentQty: '',
@@ -67,59 +70,77 @@ const RecipeModal = () => {
         if (ingredientInputs.length === 1){
             return 
         }
-
-        // const values = [...ingredientInputs]
-        // values.splice(index, 1)
         const values = ingredientInputs.filter((field)=> field.id !== index)
         manageIngredientsInputs(values)
     }
 
-
-    const manageIngredientInputChange = (index:any, value:any) => {
-        // const updatedInputs = [...ingredientInputs]
-        // updatedInputs[index] = value
-        const updatedInputs = ingredientInputs.map((field) => {
-            if(field.id === index){
-                return {
-                    ...field,
-                    measurmentQty: value.target.measurmentQty,
-                    measurmentUnit: value.target.measurmentUnit,
-                    ingredients: value.target.ingredients,
-                }
+    const updateIngredients = (id:number, updatedData: "measurmentQty"|"measurmentUnit"|"ingredients", data: string) =>{
+        const ingredients = ingredientInputs.map(ingredient => {
+            if (ingredient.id === id){
+                ingredient[updatedData] = data
             }
-            return field
+            return ingredient;
         })
-        manageIngredientsInputs(updatedInputs)
+        manageIngredientsInputs(ingredients)
     }
 
 
+    // const manageIngredientInputChange = (index:any, value:any) => {
+    //     const updatedInputs = ingredientInputs.map((field) => {
+    //         if(field.id === index){
+    //             return {
+    //                 ...field,
+    //                 measurmentQty: value.target.measurmentQty,
+    //                 measurmentUnit: value.target.measurmentUnit,
+    //                 ingredients: value.target.ingredients,
+    //             }
+    //         }
+    //         return field
+    //     })
+    //     manageIngredientsInputs(updatedInputs)
+    // }
+
+
     //b. Cooking-Steps Input State
-    // const [instructionInputs, manageInstructionInputs] = useState(['']);
+    const [instructionInputs, manageInstructionInputs] = useState(['']);
 
     // const manageAddedInstructionInputs = () => {
     //     manageInstructionInputs([...instructionInputs,''])
     // }
 
-    // const onDeleteInstructionInput = (index: any) => {
+    const onDeleteInstructionInput = (index: any) => {
     
-    //     if (instructionInputs.length === 1){
-    //     return 
-    //     }
-    //     const values = [...instructionInputs]
-    //     values.splice(index, 1)
-    //     manageInstructionInputs(values)
+        if (instructionInputs.length === 1){
+        return 
+        }
+        const values = [...instructionInputs]
+        values.splice(index, 1)
+        manageInstructionInputs(values)
+    }
+
+
+    const updateInstructions = (index:number, value:string) => {
+        console.log(index, value)
+        manageInstructionInputs((instructions)=>{
+            const temp = [...instructions]
+            temp[index] = value
+            return [...temp]
+        })
+    }
+
+    const addNewInstruction = () =>{
+        manageInstructionInputs((instructions)=> {
+            return [...instructions, '']
+        })
+    }
+
+    // const updateInstructions = (index:number, value: string) =>{
+    //     const temp = []
     // }
 
 
-    // const manageInstructionInputChange = (index:any, value:any) => {
-    //     const updatedInputs = [...instructionInputs]
-    //     updatedInputs[index] = value
-    //     manageInstructionInputs(updatedInputs)
-    // }
 
-
-
-    //c. Allergies Input Statei
+    //c. Allergies Input State
     // const [allergyInputs, manageAllergyInputs] = useState(['']);
 
     // const manageAddedAllergyInputs = () => {
@@ -161,7 +182,7 @@ const RecipeModal = () => {
             imageUrl: '',
             name: '',
             foodClass:'',
-            mealCoverage:'',
+            mealCoverage:0,
             costEstimate:'',
             category:'',
             cookTime:'',
@@ -302,7 +323,7 @@ const RecipeModal = () => {
                     title="Meal Quantity"
                     subtitle="For how many people"
                     value={mealCoverage}
-                    onChange={(value)=> setCustomValue('mealCoverage', value.toString())}
+                    onChange={(value)=> setCustomValue('mealCoverage',  value)}
                 />
     
                 <Input
@@ -313,7 +334,9 @@ const RecipeModal = () => {
                         errors={errors}
                         type="number"
                         required 
-                        costEstimate  
+                        prefix={()=>{
+                            return <MdOutlinePriceChange size={20} className="text-neutral-700 absolute top-5 left-2" />
+                        }}
                 />
                 <hr />
 
@@ -325,37 +348,35 @@ const RecipeModal = () => {
                     />      
                 </div>
 
+
                 {ingredientInputs.map((field) => (
                     <div key={field.id} className="flex flex-row gap-8">
-                        <Input 
-                            id="ingredients"
+                        <BaseInput 
+                            onChange= {(event: any) => updateIngredients(field.id, "ingredients", event.target.value)}
                             label="Add Ingredient"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
                             required
-                            value={field.ingredients}
-                            onChange= {(event: any) => manageIngredientInputChange(field.id, event)}
+                            id="ingredients"
                         />
-                        <Input
+
+                        <BaseInput
                         id="measurmentQty"
                         label="How much"
                         disabled={isLoading}
-                        register={register}
-                        errors={errors}
-                        required
                         type="number"
-                        value={field.measurmentQty}
-                            
+                        min="0"
+                        onChange= {(event: any) => updateIngredients(field.id, "measurmentQty", event.target.value)}
                         />
-                        {/* <label id="measurmentUnit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Select an option</label> */}
-                        <select id="measurmentUnit" 
-                            onSelect={(selected) => setCustomValue('measurmentUnit', selected.currentTarget.value)}
-                            value={field.measurmentUnit}
-                            className="border-headline border-2 text-lg rounded-lg block w-full p-3 ">
-                            {Object.values(MeasurementUnits).map((unit) => <option key={unit}>{unit}</option>)}
-                        </select>
+                        <div className="w-full relative">
+                            <label htmlFor="measurmentUnit" id="measurmentUnit" 
+                            className="block mb-2 text-sm font-medium text-headline"
+                            > Select measurement</label>
+                            <select id="measurmentUnit"  className="bg-primary border-2 border-headline text-gray-900 text-sm rounded-lg block w-full p-2.5
+                            "
+                                onChange= {(event: any) => updateIngredients(field.id, "measurmentUnit", event.target.value)}
+                                >
+                                {Object.values(MeasurementUnits).map((unit) => <option key={unit}>{unit}</option>)}
+                            </select>
+                        </div>
 
                         <button onClick={()=> (onDeleteIngredientInput(field.id))}
                              className="w-40 h-10 transition cursor-pointer flex justify-center items-center rounded-full
@@ -364,15 +385,6 @@ const RecipeModal = () => {
                         </button> 
                     </div> 
                 ))}
-
-
-                {/* 1. Create a state that handles each input created
-                 have/render a button  with a value saying add more*/}
-                {/* 2. we need a function that handles the add more functionality  */}
-                {/* A function to handle change of values in the input */}
-                {/* 3. Rendering the first input boxes by default */}
-                 {/* Add a functionality with a button that lets you create more input fields for ingredients, 
-                 need to update fieldvalues and maybe schema too*/}
             </div>
         )
     }
@@ -392,7 +404,9 @@ const RecipeModal = () => {
                             register={register}
                             errors={errors}
                             required
-                            prepTime
+                            prefix={()=>{
+                                return <AiOutlineFieldTime size={20} className="text-neutral-700 absolute top-5 left-2" />
+                            }}
                         /> 
 
                         <Input
@@ -402,23 +416,22 @@ const RecipeModal = () => {
                             register={register}
                             errors={errors}
                             required
-                            cookTime
+                            prefix={()=>{
+                                return <BiTimer size={20} className="text-neutral-700 absolute top-5 left-2" />
+                            }}
                         /> 
                 </div>
                 <hr />
 
                
-                {/* {instructionInputs.map((value, index) => (
+                {instructionInputs.map((value, index) => (
                     <div key={value} className="flex flex-row gap-8">
-                        <Input 
+                        <BaseInput 
                             id="instructions"
                             label="Cooking Steps"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
                             required
-                            value={value}
-                            onChange= {(event: any) => manageInstructionInputChange(index, event)}
+                            // onChange= {(event: any) => manageInstructionInputChange(index, event)}
+                            onChange= {(event: any) => updateInstructions(index, event.target.value)}
                         />
 
                         <button onClick={()=> (onDeleteInstructionInput(index))}
@@ -431,11 +444,11 @@ const RecipeModal = () => {
 
                 <div className="flex flex-col gap-8 ">
                     <Button 
-                        onClick={manageAddedInstructionInputs}
+                        onClick={addNewInstruction}
                         label="Add more Cooking Steps"
                         icon={AiOutlinePlus}
                     />      
-                </div> */}
+                </div>
             </div>
         )
     }
