@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import prisma from '@/app/libs/prismadb';
+import prisma,{} from '@/app/libs/prismadb';
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
@@ -15,57 +15,34 @@ export async function POST (
     }
     const body = await request.json();
     const{
-        imageUrl,
-        name,
-        foodClass,
-        category,
-        cookTime,
-        prepTime,
-        mealCoverage,
-        costEstimate,
-        instructions,
-        measurmentUnit,
-        measurmentQty,
         ingredients,
-        allergies
+        allergies,
+        ...recipeItems
     } = body
 
-    const createdIngredients = await prisma.ingredient.create({
-        data: {
-            // allergies,
-            measurmentQty,
-            measurmentUnit,
-            name: ingredients,
-        }
-    })
+
 
 
     const recipe = await prisma.recipe.create({
             data: {
-            imageUrl,
-            name,
-            foodClass,
-            category,
-            cookTime,
-            prepTime,
-            costEstimate,
-            mealCoverage,
+            ...recipeItems,
             user: {
                 connect: {
-                    id: currentUser.id,
+                    id: currentUser.id
                 }
             },
-            instructions: {
-                create: {
-                    description: instructions
-                }
+            ingredients:{
+                create: ingredients
             },
-            ingredients: {
-                connect: {
-                    id: createdIngredients.id,
-                }
+            allergies: {
+                create: allergies
             },
+            // userId: currentUser.id,
+            // user:{
+            //     connect: currentUser.id
+            // }
         }
     });
+    
     return NextResponse.json(recipe);
 };

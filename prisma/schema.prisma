@@ -51,30 +51,30 @@ model Account {
 }
 
 model Recipe {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   imageUrl     String
-  bookmarked   Boolean @default(false)
+  bookmarked   Boolean  @default(false)
   cookTime     String?
   prepTime     String?
   mealCoverage String
   costEstimate String?
   foodClass    String
   category     String
+  instructions String[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime @default(now())
 
-  userId        String   @db.ObjectId
-  ingredientId  String[] @db.ObjectId
-  instructionId String[] @db.ObjectId
-  allergyId     String[] @db.ObjectId
+  userId       String   @db.ObjectId
+  ingredientId String[] @db.ObjectId
 
-  instructions instruction[] @relation(fields: [instructionId], references: [id])
-  ingredients  ingredient[]  @relation(fields: [ingredientId], references: [id])
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  allergy      allergy[]     @relation(fields: [allergyId], references: [id])
+  allergyId String[] @db.ObjectId
+
+  ingredients ingredient[] @relation(fields: [ingredientId], references: [id])
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  allergies   allergy[]    @relation(fields: [allergyId], references: [id])
 }
 
 model ingredient {
@@ -87,16 +87,6 @@ model ingredient {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   deletedAt      DateTime @default(now())
-}
-
-model instruction {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  description String
-  recipeId    String[] @db.ObjectId
-  recipe      Recipe[] @relation(fields: [recipeId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime @default(now())
 }
 
 model allergy {
