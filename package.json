@@ -24,6 +24,7 @@
     "next-auth": "^4.22.1",
     "next-cloudinary": "^4.10.1",
     "postcss": "8.4.23",
+    "prisma": "^4.13.0",
     "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -37,7 +38,6 @@
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
     "@types/bcrypt": "^5.0.0",
-    "prisma": "^4.13.0",
     "webpack": "^5.85.0",
     "webpack-cli": "^5.1.1"
   }

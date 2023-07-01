@@ -6,7 +6,7 @@ import IngredientBox from "@/app/components/recipes/IngredientBox";
 import InstructionBox from "@/app/components/recipes/InstructionBox";
 import RecipeHead from "@/app/components/recipes/RecipeHead";
 import RecipeInfo from "@/app/components/recipes/RecipeInfo";
-import { SafeIngredients, SafeInstructions, SafeUser, safeRecipe } from "@/app/types";
+import { SafeIngredients, SafeUser, safeRecipe } from "@/app/types";
 import { useMemo } from "react";
 
 interface RecipeClientProps{

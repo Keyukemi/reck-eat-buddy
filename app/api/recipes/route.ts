@@ -37,7 +37,7 @@ export async function POST (
             allergies: {
                 create: allergies
             },
-            // userId: currentUser.id,
+            //userId: currentUser.id,
             // user:{
             //     connect: currentUser.id
             // }
