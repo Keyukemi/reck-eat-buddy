@@ -8,7 +8,7 @@ import { signOut } from "next-auth/react";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal"; 
-import addRecipeModal from "@/app/hooks/addRecipeModal";
+import useRecipeModal from "@/app/hooks/useRecipeModal";
 import { SafeUser } from "@/app/types";
 import { useRouter } from "next/navigation";
 
@@ -24,7 +24,7 @@ const UserMenu:React.FC <UserMenuProps> = ({
     const router = useRouter();
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
-    const RecipeModal = addRecipeModal();
+    const RecipeModal = useRecipeModal();
     const [isOpen, setIsOpen] =useState(false);
 
     const toggleOpen = useCallback(()=> {

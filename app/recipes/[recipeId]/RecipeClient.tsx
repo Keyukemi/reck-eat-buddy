@@ -10,11 +10,7 @@ import { SafeIngredients, SafeUser, safeRecipe } from "@/app/types";
 import { useMemo } from "react";
 
 interface RecipeClientProps{
-    recipe: safeRecipe & {
-        user: SafeUser,
-        // ingredients: SafeIngredients,
-        // instructions: SafeInstructions
-    }
+    recipe: safeRecipe & { user: SafeUser,}
     currentUser?: SafeUser | null;
 }
 
@@ -56,7 +52,7 @@ const RecipeClient: React.FC <RecipeClientProps> = ({
                     <div className="border border-black border-3 w-full">
                         <InstructionBox 
                             instructions= ""
-                        
+                    
                         />
                     </div>
 

@@ -1,16 +1,16 @@
 import {create} from "zustand";
 
-interface addRecipeStore {
+interface useRecipeStore {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
 
 }
 
-const addRecipeModal = create <addRecipeStore> ((set) => ({
+const useRecipeModal = create <useRecipeStore> ((set) => ({
     isOpen: false,
     onOpen: () => set({isOpen: true}),
     onClose: () => set({isOpen: false})
 }));
 
-export default addRecipeModal;
+export default useRecipeModal;

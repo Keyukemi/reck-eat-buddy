@@ -1,6 +1,6 @@
 'use client'
 
-import addRecipeModal from "@/app/hooks/addRecipeModal";
+import useRecipeModal from "@/app/hooks/useRecipeModal";
 import Modal from "./Modal";
 import { useMemo, useState } from "react";
 import Heading from "../Heading";
@@ -8,7 +8,6 @@ import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
 
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import {DevTool} from "@hookform/devtools"
 
 import ImageUpload from "../inputs/ImageUpload";
 import Input, {BaseInput} from "../inputs/Input";
@@ -40,7 +39,7 @@ const MeasurementUnits = {
 
 const RecipeModal = () => {
     const router = useRouter()
-    const addRecipe = addRecipeModal();
+    const addRecipe = useRecipeModal();
 
     const [step, setStep] = useState(STEPS.CUISINE);
 
@@ -208,16 +207,13 @@ const RecipeModal = () => {
             instructions: instructionInputs,
             allergies: allergyInputs
         }
-        console.log(recipeData)
-        axios.post('/api/recipes', {...recipeData})
-        .then(() =>{
+        axios.post('/api/recipes', {...recipeData}) .then(() =>{
             toast.success('Recipe Created!');
             router.refresh();
             reset();
             setStep(STEPS.CUISINE);
             addRecipe.onClose;
         })
-
         .catch (()=>{
             toast.error('Something went wrong!');
         })
@@ -474,14 +470,13 @@ const RecipeModal = () => {
                 <div className="flex flex-col gap-8 ">
                     <Button 
                         onClick={addNewAllergy}
-                        label="Add more Cooking Steps"
+                        label="Add more allergies"
                         icon={AiOutlinePlus}
                     />      
                 </div> 
             </div>
         )
     }
-    <DevTool control={control}/>
 
 
 

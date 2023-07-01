@@ -1,24 +1,16 @@
-'use client'
-import { SafeIngredients, SafeUser, safeRecipe } from "@/app/types"
-import { ingredient } from "@prisma/client";
+import { SafeIngredients } from "@/app/types";
 
-
-interface IngredientBoxProps{
-    // ingredients: string
-    ingredients: SafeIngredients | null
+interface IngredientBoxProps {
+  ingredients: SafeIngredients | null;
 }
 
-const IngredientBox: React.FC <IngredientBoxProps> = ({
-    ingredients
-}) => {
-    return ( 
-        <div>
-            List Ingredients here 
-            {ingredients?.name}
-        </div>
-     );
+const IngredientBox: React.FC<IngredientBoxProps> = ({ ingredients }) => {
+  return (
+    <div>
+      List Ingredients here
+      {ingredients ? ingredients.name : null}
+    </div>
+  );
+};
 
-}
-
- 
 export default IngredientBox;

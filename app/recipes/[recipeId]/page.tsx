@@ -5,6 +5,8 @@ import ClientOnly from "@/app/components/ClientOnly";
 import EmptyState from "@/app/components/EmptyState";
 import RecipeClient from "./RecipeClient";
 
+
+
 interface IParams{
     recipeId?: string
 }

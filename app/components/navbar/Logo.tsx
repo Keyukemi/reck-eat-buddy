@@ -11,7 +11,7 @@ const Logo = () => {
          onClick={() =>router.push('/')}
         src={RebLogo}
         alt="Logo"
-        className="hidden md:block cursor-pointer"
+        className="md:block cursor-pointer"
         width="100"
         height="100"
         priority
@@ -19,6 +19,4 @@ const Logo = () => {
    )
 }
 
-
- 
 export default Logo ;

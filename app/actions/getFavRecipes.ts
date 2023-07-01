@@ -1,4 +1,4 @@
-import prisma from '@/app/libs/prismadb';
+import prismadb from '@/app/libs/prismadb';
 
 import getCurrentUser from './getCurrentUser';
 
@@ -8,7 +8,7 @@ export default async function getFavRecipes(){
         // if (!currentUser){
         //     return [];
         // }
-        // const favorites = await prisma.user.findMany({
+        // const favorites = await prismadb.user.findMany({
         //     where:{
         //         id:{
         //             in:[...(currentUser.favoriteIds || [])]

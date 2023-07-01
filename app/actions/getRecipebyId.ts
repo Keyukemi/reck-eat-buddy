@@ -1,4 +1,4 @@
-import prisma from '@/app/libs/prismadb'
+import db from '@/app/libs/prismadb'
 
 interface IParams{
     recipeId?: string
@@ -9,7 +9,7 @@ export default async function getRecipebyId(
 ){
     try {
         const {recipeId} = params;
-        const recipe = await prisma.recipe.findUnique({
+        const recipe = await prismadb.recipe.findUnique({
             where: {
                 id: recipeId
             },

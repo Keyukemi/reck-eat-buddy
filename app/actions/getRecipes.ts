@@ -1,4 +1,4 @@
-import prisma from "@/app/libs/prismadb"
+import prismadb from "@/app/libs/prismadb"
 
 export interface IRecipesParams{
     userId?: string;
@@ -29,7 +29,7 @@ export default async function getRecipes(
         // }
 
 
-        const recipes = await prisma.recipe.findMany({
+        const recipes = await prismadb.recipe.findMany({
             //where:query, 
             orderBy: {
                 createdAt: 'desc'
